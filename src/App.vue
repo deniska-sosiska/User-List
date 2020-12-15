@@ -1,12 +1,19 @@
 <template>
   <div id="app" class="container">
+    <userList />
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import userList from './components/User-list.vue'
 
-export default {  name: 'App',  }
+export default {
+  name: 'App',
+  components: {
+    userList
+  }
+}
 </script>
 
 <style>
@@ -24,5 +31,8 @@ export default {  name: 'App',  }
   .container {
     max-width: 1200px;
     margin: 0 auto;
+  }
+  body {
+    background: #e6e6e6;
   }
 </style>

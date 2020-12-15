@@ -11,7 +11,22 @@ export default new Vuex.Store({
     data: {},
     apiUrl: 'https://randomuser.me/api/'
   },
-  mutations: {},
-  actions: {},
-  getters: {}
+  mutations: {
+    setData(state, data) {
+      state.data = data
+    }
+  },
+  actions: {
+    updateData(ctx, howMany) {
+      axios.get(ctx.state.apiUrl + '?results=' + howMany).then(res => {
+        ctx.commit('setData', res.data)
+        // console.log("store: ", res.data.results[0].name)
+      })
+    }
+  },
+  getters: {
+    getData(state) {
+      return state.data
+    }
+  }
 })
