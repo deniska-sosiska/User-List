@@ -26,9 +26,16 @@
           <td>+++</td>
         </tr>
         <tr
-        v-if="zxc[index]"
+        v-if="zxc[index] == true"
+        :style="index % 2 == 0 ? 'background: #d9d9d9' : ''"
         :key="user.login.md5 + 'qwe'" class="additionalInformation">
-          qweqwe
+          <td colspan="3">
+            <div style="display: flex; flex-direction: column; justify-content:center">
+              <p>qwe</p>
+              <p>zxc</p>
+              <p>zqwe</p>
+            </div>
+          </td>
         </tr>
       </template>
     </tbody>
@@ -46,7 +53,7 @@ export default {
   },
   computed: {
     getData(){
-      // console.log("vue: ", this.$store.getters.getData.results)
+      console.log("vue: ", this.$store.getters.getData.results)
       // let zxc = this.$store.getters.getData.results
       return this.$store.getters.getData
     }
@@ -69,16 +76,19 @@ export default {
     border-spacing: 0px;
   }
   .additionalInformation {
-    height: 100px;
-    width: 1000px;
-    background: #000;
+    height: 200px;
+    /* background: #000; */
   }
   th {
     padding-bottom: 5px;
+    text-align: center;
   }
   td {
     padding: 8px 20px;
     text-align: center;
+  }
+  tr {
+    padding: 0px 15px;
   }
   .image > img {
     user-select: none;
