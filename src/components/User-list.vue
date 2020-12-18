@@ -1,5 +1,33 @@
 <template>
-  <table class="users">
+<div>
+  <div class="userList">
+    <div class="userList__header">
+      <div></div>
+      <div>Last</div>
+      <div>First</div>
+      <div>Username</div>
+      <div>Phone</div>
+      <div>Location</div>
+      <div></div>
+    </div>
+    <div class="userList_items">
+      <div class="userList_item"
+      v-for="(user, indexOfUser) in users.results" :key="user.login.md5"
+      :style="indexOfUser % 2 == 0 ? 'background: #d9d9d9' : ''"
+      >
+        <div class="image"><img :src="user.picture.thumbnail"></div>
+        <div>{{user.name.last}}</div>
+        <div>{{user.name.first}}</div>
+        <div>{{user.login.username}}</div>
+        <div>{{user.phone}}</div>
+        <div>{{user.location.country}}</div>
+        <div>+++</div>
+      </div>
+    </div>
+  </div>
+
+  <hr style="margin-top: 100px;">
+   <table class="users">
     <thead>
       <tr>
         <th></th>
@@ -65,25 +93,32 @@
       </template>
     </tbody>
   </table>
+  </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import axios from 'axios'
 
 export default {
   data() {
     return {
+      users: [],
       arrayForUserAdditInfo: []
     }
   },
   computed: {
     getData(){
       console.log("vue: ", this.$store.getters.getData.results[0])
-      return this.$store.getters.getData
+      return this.users = this.$store.getters.getData
     }
   },
   mounted() {
-    this.$store.dispatch('updateData', 3)
+    // this.$store.dispatch('updateData', 1)
+    
+    axios.get('https://randomuser.me/api/?results=1').then(res => {
+      this.users = res.data 
+    })
   },
   methods: {
     showAdditionalInformation(indexOfUser) {
@@ -100,6 +135,29 @@ export default {
 </script>
 
 <style>
+  .userList__header {
+    display: flex;
+    padding: 10px 0px;
+    /* justify-content: center; */
+  }
+  .userList__header > div {
+    width: calc(100% / 7);
+    text-align: center;
+    font-weight: bold;
+    user-select: none;
+  }
+  .userList_item {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+  }
+  .userList_item > div {
+    width: calc(100% / 7);
+    text-align: center;
+    padding: 6px 0px;
+  }
+
+
   .users {
     margin: 20px auto;
     border-spacing: 0px;

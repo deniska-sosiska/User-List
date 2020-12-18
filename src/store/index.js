@@ -16,20 +16,21 @@ export default new Vuex.Store({
     setData(state, data) {
       state.data = data
     },
-    setArrayForUserAdditInfo(state, indexOfUser) {
-      state.arrayForUserAdditInfo.forEach((elem, indexOfArray) => {
-        if (elem == true && indexOfUser != indexOfArray) {
-          Vue.set(state.arrayForUserAdditInfo, indexOfArray, false)
-        }
-      })
-      Vue.set(state.arrayForUserAdditInfo, indexOfUser, !state.arrayForUserAdditInfo[indexOfUser])
-      console.log(state.arrayForUserAdditInfo[indexOfUser])
-    }
+    // setArrayForUserAdditInfo(state, indexOfUser) {
+    //   state.arrayForUserAdditInfo.forEach((elem, indexOfArray) => {
+    //     if (elem == true && indexOfUser != indexOfArray) {
+    //       Vue.set(state.arrayForUserAdditInfo, indexOfArray, false)
+    //     }
+    //   })
+    //   Vue.set(state.arrayForUserAdditInfo, indexOfUser, !state.arrayForUserAdditInfo[indexOfUser])
+    //   console.log(state.arrayForUserAdditInfo[indexOfUser])
+    // }
   },
   actions: {
     updateData(ctx, howMany) {
       axios.get(ctx.state.apiUrl + '?results=' + howMany).then(res => {
         ctx.commit('setData', res.data)
+        console.log("Status request: ", res.status)
         // console.log("store: ", res.data.results[0].name)
       })
     }
@@ -38,8 +39,8 @@ export default new Vuex.Store({
     getData(state) {
       return state.data
     },
-    getArrayForUserAdditInfo(state) {
-      return state.arrayForUserAdditInfo
-    }
+    // getArrayForUserAdditInfo(state) {
+    //   return state.arrayForUserAdditInfo
+    // }
   }
 })
