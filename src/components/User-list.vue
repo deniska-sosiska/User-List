@@ -12,11 +12,10 @@
       </tr>
     </thead>
     <tbody>
-      <template v-for="(user, index) in getData.results">
+      <template v-for="(user, indexOfUser) in getData.results" >
         <tr
-        :style="index % 2 == 0 ? 'background: #d9d9d9' : ''" :key="user.login.md5"
-        @click="showAdditionalInformation(index)"
-        >
+        :style="indexOfUser % 2 == 0 ? 'background: #d9d9d9' : ''" :key="user.login.md5"
+        @click="showAdditionalInformation(indexOfUser)">
           <td class="image"><img :src="user.picture.thumbnail"></td>
           <td>{{user.name.last}}</td>
           <td>{{user.name.first}}</td>
@@ -26,15 +25,41 @@
           <td>+++</td>
         </tr>
         <tr
-        v-if="zxc[index] == true"
-        :style="index % 2 == 0 ? 'background: #d9d9d9' : ''"
+        v-if="arrayForUserAdditInfo[indexOfUser]"
+        :style="indexOfUser % 2 == 0 ? 'background: #d9d9d9' : ''"
         :key="user.login.md5 + 'qwe'" class="additionalInformation">
-          <td colspan="3">
-            <div style="display: flex; flex-direction: column; justify-content:center">
-              <p>qwe</p>
-              <p>zxc</p>
-              <p>zqwe</p>
+          <td colspan="2">
+            <div class="wrapper_column">
+              <div class="column">
+              <p style="font-size: 24px;">{{user.name.first}}</p>
+              <p>Username: {{user.login.username}}</p>
+              <p>Registered: {{user.registered.age}}</p>
+              <p>Email: {{user.email}}</p>
+              </div>
             </div>
+          </td>
+          <td colspan="2">
+            <div class="wrapper_column">
+              <div class="column">
+              <p> </p>
+              <p>Address: {{user.location.street.name}} {{user.location.street.number}}</p>
+              <p>Registered: {{user.registered.age}}</p>
+              <p>Email: {{user.email}}</p>
+              </div>
+            </div>
+          </td>
+          <td colspan="1">
+            <div class="wrapper_column">
+              <div class="column">
+              <p> </p>
+              <p>Address: {{user.location.street.name}} {{user.location.street.number}}</p>
+              <p>Registered: {{user.registered.age}}</p>
+              <p>Email: {{user.email}}</p>
+              </div>
+            </div>
+          </td>
+          <td colspan="2">
+            <img :src="user.picture.large" alt="">
           </td>
         </tr>
       </template>
@@ -48,23 +73,27 @@ import Vue from 'vue'
 export default {
   data() {
     return {
-      zxc: []
+      arrayForUserAdditInfo: []
     }
   },
   computed: {
     getData(){
-      console.log("vue: ", this.$store.getters.getData.results)
-      // let zxc = this.$store.getters.getData.results
+      console.log("vue: ", this.$store.getters.getData.results[0])
       return this.$store.getters.getData
     }
   },
   mounted() {
-    this.$store.dispatch('updateData', 10)
+    this.$store.dispatch('updateData', 3)
   },
   methods: {
-    showAdditionalInformation(index) {
-      !this.zxc[index] ? this.zxc[index] = true : this.zxc[index] = false
-      console.log(this.zxc)
+    showAdditionalInformation(indexOfUser) {
+      this.arrayForUserAdditInfo.forEach((elem, indexOfArray) => {
+        if (elem == true && indexOfUser != indexOfArray) {
+          Vue.set(this.arrayForUserAdditInfo, indexOfArray, false)
+          return false
+        }
+      })
+      Vue.set(this.arrayForUserAdditInfo, indexOfUser, !this.arrayForUserAdditInfo[indexOfUser])
     }
   }
 }
@@ -75,20 +104,25 @@ export default {
     margin: 20px auto;
     border-spacing: 0px;
   }
-  .additionalInformation {
-    height: 200px;
-    /* background: #000; */
+  .wrapper_column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+  .column {
+    text-align: start;
+    padding-left: 15px;
+  }
+  table {  width: 90%;  }
+  tr {  padding: 0px 15px;  }
   th {
     padding-bottom: 5px;
     text-align: center;
   }
   td {
-    padding: 8px 20px;
+    padding: 4px 10px;
     text-align: center;
-  }
-  tr {
-    padding: 0px 15px;
+    cursor: pointer;
   }
   .image > img {
     user-select: none;
