@@ -1,37 +1,51 @@
 <template>
-  <tr :style="indexOfUser % 2 == 0 ? 'background: #d9d9d9' : ''" :key="user.login.md5"
-  @click="showAdditionalInformation(indexOfUser)">
-    <td class="image"><img :src="user.picture.thumbnail"></td>
-    <td>{{user.name.last}}</td>
-    <td>{{user.name.first}}</td>
-    <td>{{user.login.username}}</td>
-    <td>{{user.phone}}</td>
-    <td>{{user.location.country}}</td>
-    <td>+++</td>
-  </tr>
+  <div class="userList_item">
+    <div class="main_info column" :style="indexOfUser % 2 == 0 ? 'background: #d9d9d9' : ''">
+      <div class="image"><img :src="user.picture.thumbnail"></div>
+      <div>{{user.name.last}}</div>
+      <div>{{user.name.first}}</div>
+      <div>{{user.login.username}}</div>
+      <div>{{user.phone}}</div>
+      <div>{{user.location.country}}</div>
+      <div @click="showAdditionalInformation(indexOfUser)">+++</div>
+    </div>
+    <UserAdditionalInfo v-if="getSelectedID == indexOfUser"
+    :user="user" :indexOfUser="indexOfUser" />
+  </div>
 </template>
 
 <script>
-export default {
-  props: [
-    "user",
-    "indexOfUser"
-  ],
-  methods: {
-    showAdditionalInformation(indexOfUser) {
-      this.$store.commit('setArrayForUserAdditInfo', indexOfUser)
+  import UserAdditionalInfo from './User-additional-info.vue'
+
+  export default {
+    computed: {
+      getSelectedID() {  return this.$store.getters.getSelectedID  } 
+    },
+    methods: {
+      showAdditionalInformation(indexOfUser) {
+        this.$store.commit('setSelectedID', indexOfUser)
+      }
+    },  
+    props: [
+      "user",
+      "indexOfUser"
+    ],
+    components: {
+      UserAdditionalInfo
     }
-  },
-}
+  }
 </script>
 
-<style scoped>
-  tr {
-    padding: 0px 15px;
-  }
+<style>
   .image > img {
     user-select: none;
     border-radius: 100%;
     border: 4px solid #fff;
   }
+  .main_info {
+    display: flex;
+    align-items: center;
+  }
+  .main_info > div {  padding: 6px 0px;  }
+  /* .additional_info {} */
 </style>

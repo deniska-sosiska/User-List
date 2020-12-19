@@ -9,22 +9,16 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     data: {},
-    arrayForUserAdditInfo: [],
+    selectedID: null,
     apiUrl: 'https://randomuser.me/api/'
   },
   mutations: {
     setData(state, data) {
       state.data = data
     },
-    // setArrayForUserAdditInfo(state, indexOfUser) {
-    //   state.arrayForUserAdditInfo.forEach((elem, indexOfArray) => {
-    //     if (elem == true && indexOfUser != indexOfArray) {
-    //       Vue.set(state.arrayForUserAdditInfo, indexOfArray, false)
-    //     }
-    //   })
-    //   Vue.set(state.arrayForUserAdditInfo, indexOfUser, !state.arrayForUserAdditInfo[indexOfUser])
-    //   console.log(state.arrayForUserAdditInfo[indexOfUser])
-    // }
+    setSelectedID(state, indexOfUser) {
+      state.selectedID = indexOfUser
+    }
   },
   actions: {
     updateData(ctx, howMany) {
@@ -36,11 +30,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getData(state) {
-      return state.data
-    },
-    // getArrayForUserAdditInfo(state) {
-    //   return state.arrayForUserAdditInfo
-    // }
+    getData: ({data}) => data,
+    getSelectedID: ({selectedID}) => selectedID
   }
 })
