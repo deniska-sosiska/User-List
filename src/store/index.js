@@ -10,27 +10,38 @@ export default new Vuex.Store({
   state: {
     data: {},
     selectedID: null,
+    allGenders: {},
+    popupIsActive: false,
     apiUrl: 'https://randomuser.me/api/'
   },
   mutations: {
-    setData(state, data) {
-      state.data = data
-    },
-    setSelectedID(state, indexOfUser) {
-      state.selectedID = indexOfUser
+    setData(state, value) {  state.data = value  },
+    setSelectedID(state, indexOfUser) {  state.selectedID = indexOfUser  },
+    setPopupIsActive(state, value) {  state.popupIsActive = value  },
+
+    setInfoAboutGenders(state, value) {
+      let male = 0, female = 0
+      value.forEach(elem => {
+        elem.gender == 'male'? male++ : female++
+      })
+      state.allGenders = {male, female}
     }
   },
   actions: {
-    updateData(ctx, howMany) {
-      axios.get(ctx.state.apiUrl + '?results=' + howMany).then(res => {
-        ctx.commit('setData', res.data)
-        console.log("Status request: ", res.status)
-        // console.log("store: ", res.data.results[0].name)
-      })
+    async updateData({state, commit}, howMany) {
+      let res = await axios.get(state.apiUrl + '?results=' + howMany)
+        
+      console.log("Status request: ", res.status)
+      commit('setData', res.data.results)
+      commit('setInfoAboutGenders', res.data.results)
+
+      return false
     }
   },
   getters: {
     getData: ({data}) => data,
-    getSelectedID: ({selectedID}) => selectedID
+    getSelectedID: ({selectedID}) => selectedID,
+    getPopupIsActive: ({popupIsActive}) => popupIsActive,
+    getInfoAboutGenders: ({allGenders}) => allGenders
   }
 })

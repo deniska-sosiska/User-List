@@ -1,17 +1,47 @@
 <template>
-  <div id="app" class="container">
-    <userList />
+  <div id="app">
+    <Popup v-if="getPopupIsActive"/>
+    <div class="container">
+      <div class="search_and_showChart">
+        <label for="search">Search by name: </label>
+        <input type="text" id="search" v-model="searchedName">
+        <button @click="setPopupIsActive()">Show chart</button>
+      </div>
+      <UserList :searchedName='searchedName' />
+    </div>    
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import userList from './components/User-list.vue'
+
+import UserList from './components/User-list.vue'
+import Popup from './components/Popup.vue'
 
 export default {
   name: 'App',
+  data() {
+    return {
+      searchedName: '',
+      popupIsActive: false
+    }
+  },
+  computed: {
+    getPopupIsActive() {
+      return this.$store.getters.getPopupIsActive
+    }
+  },
+  methods: {
+    setPopupIsActive() {
+      this.$store.commit('setPopupIsActive', !this.getPopupIsActive)
+    }
+  },
+  mounted() {
+      this.$store.commit('setPopupIsActive', false)
+  },
   components: {
-    userList
+    UserList,
+    Popup
   }
 }
 </script>
@@ -34,5 +64,19 @@ export default {
   }
   body {
     background: #e6e6e6;
+  }
+  
+  .search_and_showChart {
+    text-align: center;
+    padding: 40px 0px;
+  }
+  .search_and_showChart > input {
+    padding: 4px 8px;
+    margin-left: 5px;
+  }
+  .search_and_showChart > button {
+    font-size: 15px;
+    padding: 4px 8px;
+    margin: 0px 40px;
   }
 </style>
