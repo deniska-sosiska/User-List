@@ -4,7 +4,7 @@
     <div class="container">
       <div class="search_and_showChart">
         <label for="search">Search by name: </label>
-        <input type="text" id="search" v-model="searchedName">
+        <input type="text" id="search" v-model="searchedName" @input="clearID()">
         <button @click="setPopupIsActive()">Show chart</button>
       </div>
       <UserList :searchedName='searchedName' />
@@ -34,6 +34,9 @@ export default {
   methods: {
     setPopupIsActive() {
       this.$store.commit('setPopupIsActive', !this.getPopupIsActive)
+    },
+    clearID() {
+      this.$store.commit('setSelectedID', null)
     }
   },
   mounted() {

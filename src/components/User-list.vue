@@ -50,11 +50,6 @@ export default {
       }
     }
   },
-  methods: {
-    clearID() {
-      this.$store.commit('setSelectedID', null)
-    }
-  },
   async mounted() {
     this.loading = await this.$store.dispatch('updateData', 15)
   },
