@@ -4,7 +4,10 @@
     <div class="container">
       <div class="search_and_showChart">
         <label for="search">Search by name: </label>
-        <input type="text" id="search" v-model="searchedName" @input="clearID()">
+        <input type="text" id="search"
+          v-model="searchedName" @input="clearID()"
+          placeholder="Input searched name"
+        >
         <button @click="setPopupIsActive()">Show chart</button>
       </div>
       <UserList :searchedName='searchedName' />
