@@ -1,11 +1,13 @@
 import { shallowRef, onMounted, onUnmounted } from 'vue';
 import * as spinnersList from 'epic-spinners';
+import { useCalculateSwitchDelayTime } from '@/composables/calculateSwitchDelayTime';
 
 export function useSwitchSpinnerComponents() {
     let timerID = undefined;
     const propsName = 'animationDuration';
     const spinnersListKeys = Object.keys(spinnersList);
     const spinnersListKeysLength = spinnersListKeys.length;
+    const { getDelayTime } = useCalculateSwitchDelayTime();
 
     function getRandomInteger(min, max, prevResult = undefined) {
         const randomValue = Math.random() * (max - min) + min;
@@ -22,16 +24,6 @@ export function useSwitchSpinnerComponents() {
     const initialSpinnerName = spinnersListKeys[randomInteger];
     const currentSpinnerComponentName = shallowRef(spinnersList[initialSpinnerName]);
 
-    const getDelayTime = (componentAnimationDuration) => {
-        if (componentAnimationDuration >= 4000) {
-            return componentAnimationDuration;
-        }
-        if (componentAnimationDuration >= 2000) {
-            return componentAnimationDuration * 2;
-        }
-
-        return componentAnimationDuration * 3;
-    };
 
     const changeCurrentSpinnerComponent = () => {
         randomInteger = getRandomInteger(0, spinnersListKeysLength, randomInteger);
@@ -45,5 +37,5 @@ export function useSwitchSpinnerComponents() {
     onMounted(changeCurrentSpinnerComponent);
     onUnmounted(() => clearTimeout(timerID));
 
-    return { currentSpinnerComponentName };
+    return { currentSpinnerComponentName, changeCurrentSpinnerComponent };
 }
