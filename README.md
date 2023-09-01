@@ -1,16 +1,18 @@
 # User list
 
+### Users API: https://randomuser.me/
+
 ## Project setup
 ```
-npm install
+yarn install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run dev
+yarn start
 ```
 
 ### Compiles and minifies for production
 ```
-npm run b
+yarn build && yarn preview
 ```
