@@ -46,7 +46,7 @@
 <style>
     @font-face {
         font-family: "Comfortaa";
-        src: url("Comfortaa-Regular.ttf");
+        src: url("/Comfortaa-Regular.ttf");
     }
     :root {
         --gray-color: #d9d9d9;
